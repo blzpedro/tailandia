@@ -25,38 +25,40 @@ function App() {
     TweenMax.to(hole, .4, { y: 10, scaleY: 2, repeat: 1, yoyo: true, ease: Sine.easeIn });
   }
 
+  const generateDummy = () => ['🎰', '🍉', '🍒', '🍍', '🎲', '🍋', '🍀']
+  // Array.from({length: 100}, (_, index) => index.toString())
+  // ['🎰', '🍉', '🍒', '🍍', '🎲', '🍋', '🍀']
+
   return (
     <>
       <div className="container">
         <div className="slot">
           <div className="base-machine">
             <div className="base-frame">
-              <SlotCounter charClassName='char' value={123} ref={counterRef} duration={3} dummyCharacterCount={100} dummyCharacters={['🎰', '🍉', '🍒', '🍍', '🎲', '🍋', '🍀']} hasInfiniteList/>
+              <SlotCounter charClassName='char' valueClassName='val' value={123} ref={counterRef} duration={3} dummyCharacterCount={100} dummyCharacters={generateDummy()} hasInfiniteList/>
             </div>
           </div>
           <div id="slot-trigger" onClick={handleStartClick}>
             <svg id="trigger" xmlns="http://www.w3.org/2000/svg" width="35" height="143.6" viewBox="0 0 35 143.6" >
               <defs>
                 <linearGradient id="linear-gradient" x1="6.21" y1="143.63" x2="6.21" y2="67.37" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#fbc425" />
-                  <stop offset="0.2" stopColor="#f7d571" />
-                  <stop offset="0.4" stopColor="#fbc425" />
-                  <stop offset="0.6" stopColor="#f7d571" />
-                  <stop offset="0.8" stopColor="#fbc425" />
-                  <stop offset="1" stopColor="#fbc425" />
+                  <stop offset="0" stopColor="#191d2e" />
+                  <stop offset="0.1" stopColor="#191d2e" />
+                  <stop offset="0.6" stopColor="#e6ded1" />
+                  <stop offset="0.8" stopColor="#e6ded1" />
+                  <stop offset="1" stopColor="#e6ded1" />
                 </linearGradient>
                 <linearGradient id="linear-gradient-2" x1="23.71" y1="127.98" x2="23.71" y2="83.01" />
                 <linearGradient id="linear-gradient-3" x1="20.46" y1="55.66" x2="25.41" y2="55.66" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#fbc425" />
-                  <stop offset="0.2" stopColor="#f7d571" />
-                  <stop offset="0.4" stopColor="#fbc425" />
-                  <stop offset="0.6" stopColor="#f7d571" />
-                  <stop offset="0.8" stopColor="#fbc425" />
-                  <stop offset="1" stopColor="#fbc425" />
+                  <stop offset="0" stopColor="#c0a472" />
+                  <stop offset="0.1" stopColor="#c0a472" />
+                  <stop offset="0.6" stopColor="#e6ded1" />
+                  <stop offset="0.8" stopColor="#e6ded1" />
+                  <stop offset="1" stopColor="#e6ded1" />
                 </linearGradient>
                 <radialGradient id="radial-gradient" cx="23.05" cy="12.33" fx="31.426365772510508" r="12.04" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#525053" />
-                  <stop offset="0.001" stopColor="#ccc" />
+                  <stop offset="0" stopColor="#f9fffb" />
+                  <stop offset="0.001" stopColor="#f9fffb" />
                   <stop offset="1" stopColor="#525053" />
                 </radialGradient>
               </defs>
