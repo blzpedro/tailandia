@@ -1,18 +1,18 @@
 
 import { Sine, TweenMax } from 'gsap';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import SlotCounter, { SlotCounterRef } from 'react-slot-counter';
+import Snowfall from 'react-snowfall';
 
 function App() {
-  const counterRef = useRef<SlotCounterRef>(null);
+  const counter1Ref = useRef<SlotCounterRef>(null);
+  const counter2Ref = useRef<SlotCounterRef>(null);
+  const counter3Ref = useRef<SlotCounterRef>(null);
   const headRef = useRef<SVGEllipseElement>(null);
   const stickRef = useRef<SVGRectElement>(null);
   const holeRef = useRef<SVGEllipseElement>(null);
-
-  const handleStartClick = () => {
-    counterRef.current?.startAnimation();
-    slotTriggerMove()
-  };
+  const [value, setValue] = useState<string>()
+  const [showCoins, setShowCoins] = useState<boolean>(false)
 
   function slotTriggerMove() {
     const head = headRef.current;
@@ -25,20 +25,43 @@ function App() {
     TweenMax.to(hole, .4, { y: 10, scaleY: 2, repeat: 1, yoyo: true, ease: Sine.easeIn });
   }
 
-  const generateDummy = () => ['🎰', '🍉', '🍒', '🍍', '🎲', '🍋', '🍀']
-  // Array.from({length: 100}, (_, index) => index.toString())
-  // ['🎰', '🍉', '🍒', '🍍', '🎲', '🍋', '🍀']
+  const generateDummy = () => Array.from({length: 10}, (_, index) => index.toString())
+
+  const getRandomNumber = async() => {
+    setShowCoins(false)
+    slotTriggerMove()
+    const res: {numeroParticipantes: number, numeroSorteado: number} = await fetch('https://s1n1.squidchat.digital/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
+
+    setValue(res.numeroSorteado.toString())
+    rollSlots()
+  }
+
+  const rollSlots = () => {
+    counter1Ref.current?.startAnimation();
+    counter2Ref.current?.startAnimation();
+    counter3Ref.current?.startAnimation();
+
+    setTimeout(() => {
+      setShowCoins(true)
+    }, 5000)
+  }
+
+  const coin = document.createElement('img')
+  coin.src = 'dollar.png'
 
   return (
     <>
-      <div className="container">
+      {showCoins ? <Snowfall images={[coin]} radius={[30, 30]} speed={[5, 10]} wind={[0, 0]}/> : null}
+      <div className="container body" id="root2">
         <div className="slot">
           <div className="base-machine">
             <div className="base-frame">
-              <SlotCounter charClassName='char' valueClassName='val' value={123} ref={counterRef} duration={3} dummyCharacterCount={100} dummyCharacters={generateDummy()} hasInfiniteList/>
+              <SlotCounter charClassName='char' valueClassName='val' value={value && value[0] || '0'} ref={counter1Ref} startValue={'0'} autoAnimationStart={false} duration={1}  hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
+              <SlotCounter charClassName='char' valueClassName='val' value={value && value[1] || '0'} ref={counter2Ref} startValue={'0'} autoAnimationStart={false} duration={3} hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
+              <SlotCounter charClassName='char' valueClassName='val' value={value && value[2] || '0'} ref={counter3Ref} startValue={'0'} autoAnimationStart={false} duration={5}  hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
             </div>
           </div>
-          <div id="slot-trigger" onClick={handleStartClick}>
+          <div id="slot-trigger" onClick={getRandomNumber}>
             <svg id="trigger" xmlns="http://www.w3.org/2000/svg" width="35" height="143.6" viewBox="0 0 35 143.6" >
               <defs>
                 <linearGradient id="linear-gradient" x1="6.21" y1="143.63" x2="6.21" y2="67.37" gradientUnits="userSpaceOnUse">
@@ -71,6 +94,7 @@ function App() {
           </div>
         </div>
       </div>
+      <img src="logo.png" alt="" className="logo"/>
     </>
   );
 }
