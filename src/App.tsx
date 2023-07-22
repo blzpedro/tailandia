@@ -8,10 +8,11 @@ function App() {
   const counter1Ref = useRef<SlotCounterRef>(null);
   const counter2Ref = useRef<SlotCounterRef>(null);
   const counter3Ref = useRef<SlotCounterRef>(null);
+  const counter4Ref = useRef<SlotCounterRef>(null);
   const headRef = useRef<SVGEllipseElement>(null);
   const stickRef = useRef<SVGRectElement>(null);
   const holeRef = useRef<SVGEllipseElement>(null);
-  const [value, setValue] = useState<string>()
+  const [value, setValue] = useState<string>('0000')
   const [showCoins, setShowCoins] = useState<boolean>(false)
 
   function slotTriggerMove() {
@@ -25,25 +26,26 @@ function App() {
     TweenMax.to(hole, .4, { y: 10, scaleY: 2, repeat: 1, yoyo: true, ease: Sine.easeIn });
   }
 
-  const generateDummy = () => Array.from({length: 10}, (_, index) => index.toString())
-
   const getRandomNumber = async() => {
     setShowCoins(false)
     slotTriggerMove()
-    const res: {numeroParticipantes: number, numeroSorteado: number} = await fetch('https://s1n1.squidchat.digital/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
+    const res: {numeroParticipantes: string, numeroSorteado: string} = await fetch('https://s1n1.squidchat.digital/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
 
-    setValue(res.numeroSorteado.toString())
+    setValue(res.numeroSorteado)
     rollSlots()
   }
-
+  
   const rollSlots = () => {
-    counter1Ref.current?.startAnimation();
-    counter2Ref.current?.startAnimation();
-    counter3Ref.current?.startAnimation();
+    counter1Ref.current?.startAnimation({direction: 'bottom-up'});
+    counter2Ref.current?.startAnimation({direction: 'bottom-up'});
+    counter3Ref.current?.startAnimation({direction: 'bottom-up'});
+    counter4Ref.current?.startAnimation({direction: 'bottom-up'});
 
+    const audio = new Audio('sound.mp3');
     setTimeout(() => {
       setShowCoins(true)
-    }, 5000)
+      audio.play()
+    }, 7000)
   }
 
   const coin = document.createElement('img')
@@ -51,14 +53,15 @@ function App() {
 
   return (
     <>
-      {showCoins ? <Snowfall images={[coin]} radius={[30, 30]} speed={[5, 10]} wind={[0, 0]}/> : null}
+      {showCoins ? <Snowfall images={[coin]} radius={[30, 30]} speed={[5, 10]} wind={undefined}/> : null}
       <div className="container body" id="root2">
-        <div className="slot">
+        <div className={showCoins ? "slot pulse-effect" : "slot"}>
           <div className="base-machine">
             <div className="base-frame">
-              <SlotCounter charClassName='char' valueClassName='val' value={value && value[0] || '0'} ref={counter1Ref} startValue={'0'} autoAnimationStart={false} duration={1}  hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
-              <SlotCounter charClassName='char' valueClassName='val' value={value && value[1] || '0'} ref={counter2Ref} startValue={'0'} autoAnimationStart={false} duration={3} hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
-              <SlotCounter charClassName='char' valueClassName='val' value={value && value[2] || '0'} ref={counter3Ref} startValue={'0'} autoAnimationStart={false} duration={5}  hasInfiniteList={true} dummyCharacterCount={100} dummyCharacters={generateDummy()}/>
+              <SlotCounter charClassName='char char1' valueClassName='val' value={value[0]} ref={counter1Ref} autoAnimationStart={false} duration={1} hasInfiniteList={true} dummyCharacterCount={100}/>
+              <SlotCounter charClassName='char char2' valueClassName='val' value={value[1]} ref={counter2Ref} autoAnimationStart={false} duration={3} hasInfiniteList={true} dummyCharacterCount={100}/>
+              <SlotCounter charClassName='char' valueClassName='val' value={value[2]} ref={counter3Ref}  autoAnimationStart={false} duration={5} hasInfiniteList={true} dummyCharacterCount={100}/>
+              <SlotCounter charClassName='char' valueClassName='val' value={value[3]} ref={counter4Ref}autoAnimationStart={false} duration={7} hasInfiniteList={true} dummyCharacterCount={100}/>
             </div>
           </div>
           <div id="slot-trigger" onClick={getRandomNumber}>
