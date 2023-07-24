@@ -10,7 +10,15 @@
   font-family: casino, system-ui, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  
+}
+
+#root{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: stretch;
+  height: 100vh;
 }
 
 #root2{
@@ -52,17 +60,13 @@ body {
 .base-machine {
   width: var(--machine-w);
   height: var(--machine-h);
-  /* background: #fbc425; */
-  /* background: linear-gradient(180deg, rgba(251,196,37,1) 0%, #f7d571 20%, #f7d571 30%, rgba(251,196,37,1) 50%, #f7d571 60%, #f7d571 70%, rgba(251,196,37,1) 100%); */
   border-radius: 20% / 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* box-shadow: inset 0 0px 3px #ffcc99, 0px 10px 30px rgba(0, 0, 0, 0.4); */
 }
 
 .base-machine .base-frame {
-  /* background: -webkit-linear-gradient(top, #666 0%, #fff 36%, #666 100%); */
   opacity: 1;
   display: flex;
   justify-content: space-evenly;
@@ -102,6 +106,41 @@ body {
   scale: 1.5;
 }
 
+.logo{
+  margin: 0 auto;
+  display: block;
+  width: 200px;
+}
+
+@-webkit-keyframes pulse-effect {
+  25% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+
+}
+@keyframes pulse-effect {
+  25% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+}
+
+.pulse-effect {
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-animation-name: pulse-effect;
+  animation-name: pulse-effect;
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
 @media (min-width: 1440px) {
   .char{
     width: 150px;
@@ -117,40 +156,141 @@ body {
     position: relative;
     left: -30px;
   }
+
+  .logo{    
+    position: fixed;
+    bottom: -25px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 150px;
+  }
 }
 
-.logo{
-  margin: 0 auto;
-  display: block;
-  width: 200px;
-}
-
-/* Pulse */
-@-webkit-keyframes pulse-effect {
-  25% {
-    -webkit-transform: scale(1.3);
-    transform: scale(1.3);
+@media (max-width: 1140px) {
+  .char{
+    width: 100px;
+    font-size: 3rem;
+    padding: 80px 0;
+  }
+  
+  .base-machine{
+    width: 70vw;
   }
 
+  @-webkit-keyframes pulse-effect {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+  
+  }
+  @keyframes pulse-effect {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+  }
 }
-@keyframes pulse-effect {
-  25% {
-    -webkit-transform: scale(1.3);
-    transform: scale(1.3);
+
+@media (max-width: 768px) {
+  .char{
+    width: 100px;
+    font-size: 2rem;
+    padding: 40px 0;
   }
 
+  #slot-trigger {
+    scale: 1.5;
+    cursor: pointer;
+    margin-top: -100px;
+    margin-left: 3px;
+  }
 }
-.pulse-effect {
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-animation-name: pulse-effect;
-  animation-name: pulse-effect;
-  -webkit-animation-duration: 3s;
-  animation-duration: 3s;
-  -webkit-animation-timing-function: linear;
-  animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
+
+
+@media (max-width: 600px) {
+  :root{
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #slot-trigger {
+    scale: 1;
+    cursor: pointer;
+    margin-top: -50px;
+    margin-left: -3px;
+  }
+
+  .char1, .char2{
+    left: 0px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root{
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #slot-trigger {
+    scale: 1;
+    cursor: pointer;
+    margin-top: -50px;
+    margin-left: -3px;
+  }
+
+  .char1, .char2{
+    left: 0px;
+  }
+}
+
+@media (max-width: 490px) {
+  .char{
+    width: 75px;
+    font-size: 1.5rem;
+  }
+  
+  .slot{
+    padding: 0 50px;
+    justify-content: initial;
+  }
+
+  .base-machine{
+    width: 90vw;
+    margin-left: auto;
+  }
+
+  @-webkit-keyframes pulse-effect {
+    25% {
+      -webkit-transform: scale(1.05);
+      transform: scale(1.05);
+    }
+  
+  }
+  @keyframes pulse-effect {
+    25% {
+      -webkit-transform: scale(1.05);
+      transform: scale(1.05);
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .char{
+    width: 50px;
+    font-size: 1.5rem;
+    padding: 25px 0;
+  }
+
+  .slot{
+    padding: 0 100px;
+    justify-content: initial;
+  }
+
+  #slot-trigger {
+    scale: .8;
+    cursor: pointer;
+    margin-top: -50px;
+    margin-left: -5px;
+  }
 }
