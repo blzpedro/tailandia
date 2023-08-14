@@ -147,6 +147,11 @@ body {
   }
 }
 
+.char2{
+  position: relative;
+  left: -20px;
+}
+
 @media (max-width: 1367px) {
   .char{
     font-size: 4rem;

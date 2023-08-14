@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import SlotCounter, { SlotCounterRef } from 'react-slot-counter';
 import Snowfall from 'react-snowfall';
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 function App() {
   const counter1Ref = useRef<SlotCounterRef>(null);
   const counter2Ref = useRef<SlotCounterRef>(null);
@@ -14,6 +16,10 @@ function App() {
   const holeRef = useRef<SVGEllipseElement>(null);
   const [value, setValue] = useState<string>('0000')
   const [showCoins, setShowCoins] = useState<boolean>(false)
+  const [rollCounter1, setRollCounter1] = useState<boolean>(false)
+  const [rollCounter2, setRollCounter2] = useState<boolean>(false)
+  const [rollCounter3, setRollCounter3] = useState<boolean>(false)
+  const [rollCounter4, setRollCounter4] = useState<boolean>(false)
 
   function slotTriggerMove() {
     const head = headRef.current;
@@ -32,21 +38,36 @@ function App() {
     const res: {numeroParticipantes: string, numeroSorteado: string} = await fetch('https://s1n1.squidchat.digital/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
 
     setValue(res.numeroSorteado)
-    rollSlots()
+    await rollSlots()
   }
-  
-  const rollSlots = () => {
-    counter1Ref.current?.startAnimation({direction: 'bottom-up'});
-    counter2Ref.current?.startAnimation({direction: 'bottom-up'});
-    counter3Ref.current?.startAnimation({direction: 'bottom-up'});
-    counter4Ref.current?.startAnimation({direction: 'bottom-up'});
 
-    const audio = new Audio('sound.mp3');
-    setTimeout(() => {
-      setShowCoins(true)
-      audio.play()
-    }, 7000)
-  }
+  const rollSlots = async () => {
+    setRollCounter1(true)
+    await delay(100)
+    counter1Ref.current?.startAnimation({direction: 'bottom-up'})
+    await delay(15000)
+    
+    setRollCounter2(true)
+    await delay(100)
+    counter2Ref.current?.startAnimation({direction: 'bottom-up'})
+    await delay(15000)
+    
+    setRollCounter3(true)
+    await delay(100)
+    counter3Ref.current?.startAnimation({direction: 'bottom-up'})
+    await delay(15000)
+    
+    setRollCounter4(true)
+    await delay(100)
+    counter4Ref.current?.startAnimation({direction: 'bottom-up'})
+    await delay(45000)
+
+    const audio = new Audio('sound.mp3')
+  
+    setShowCoins(true)
+    audio.play()
+  };
+  
 
   const coin = document.createElement('img')
   coin.src = 'dollar.png'
@@ -58,10 +79,10 @@ function App() {
         <div className={showCoins ? "slot pulse-effect" : "slot"}>
           <div className="base-machine">
             <div className="base-frame">
-              <SlotCounter charClassName='char char1' valueClassName='val' value={value[0]} ref={counter1Ref} autoAnimationStart={false} duration={1} hasInfiniteList={true} dummyCharacterCount={100}/>
-              <SlotCounter charClassName='char char2' valueClassName='val' value={value[1]} ref={counter2Ref} autoAnimationStart={false} duration={3} hasInfiniteList={true} dummyCharacterCount={100}/>
-              <SlotCounter charClassName='char' valueClassName='val' value={value[2]} ref={counter3Ref}  autoAnimationStart={false} duration={5} hasInfiniteList={true} dummyCharacterCount={100}/>
-              <SlotCounter charClassName='char' valueClassName='val' value={value[3]} ref={counter4Ref}autoAnimationStart={false} duration={7} hasInfiniteList={true} dummyCharacterCount={100}/>
+              <SlotCounter charClassName='char char1' valueClassName='val' value={rollCounter1 ? value[0] : 0} ref={counter1Ref} duration={15} autoAnimationStart={false} hasInfiniteList={true} animateUnchanged={false} dummyCharacterCount={100}/>
+               <SlotCounter charClassName='char char2' valueClassName='val' value={rollCounter2 ? value[1] : 0} ref={counter2Ref} duration={15} autoAnimationStart={false} hasInfiniteList={true} animateUnchanged={false} dummyCharacterCount={100}/>
+               <SlotCounter charClassName='char' valueClassName='val' value={rollCounter3 ? value[2] : 0} ref={counter3Ref} duration={15} autoAnimationStart={false} hasInfiniteList={true} animateUnchanged={false} dummyCharacterCount={100}/>
+              <SlotCounter charClassName='char' valueClassName='val' value={rollCounter4 ? value[3] : 0} ref={counter4Ref} duration={45} autoAnimationStart={false} hasInfiniteList={true} animateUnchanged={false} dummyCharacterCount={1000}/>
             </div>
           </div>
           <div id="slot-trigger" onClick={getRandomNumber}>
