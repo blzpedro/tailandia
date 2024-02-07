@@ -35,7 +35,7 @@ function App() {
   const getRandomNumber = async() => {
     setShowCoins(false)
     slotTriggerMove()
-    const res: {numeroParticipantes: string, numeroSorteado: string} = await fetch('https://s1n1.squidchat.digital/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
+    const res: {numeroParticipantes: string, numeroSorteado: string} = await fetch('https://s1n1.tailandia.squidtech.io/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
 
     setValue(res.numeroSorteado)
     await rollSlots()
