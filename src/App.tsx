@@ -15,6 +15,7 @@ function App() {
   const stickRef = useRef<SVGRectElement>(null);
   const holeRef = useRef<SVGEllipseElement>(null);
   const [value, setValue] = useState<string>('0000')
+  const [vencedor, setVencedor] = useState<{nome: string, contato: string}>()
   const [showCoins, setShowCoins] = useState<boolean>(false)
   const [rollCounter1, setRollCounter1] = useState<boolean>(false)
   const [rollCounter2, setRollCounter2] = useState<boolean>(false)
@@ -35,9 +36,10 @@ function App() {
   const getRandomNumber = async() => {
     setShowCoins(false)
     slotTriggerMove()
-    const res: {numeroParticipantes: string, numeroSorteado: string} = await fetch('https://s1n1.tailandia.squidtech.io/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
+    const res: {numeroParticipantes: string, numeroSorteado: string, nomeVencedor: string, contatoVencedor: string} = await fetch('https://s1n1.tailandia.squidtech.io/api/v1/tailandia/sorteios/resultado', {method: 'GET'}).then(T => T.json())
 
     setValue(res.numeroSorteado)
+    setVencedor({nome: res.nomeVencedor, contato: res.contatoVencedor})
     await rollSlots()
   }
 
@@ -75,6 +77,10 @@ function App() {
   return (
     <>
       {showCoins ? <Snowfall images={[coin]} radius={[30, 30]} speed={[5, 10]} wind={undefined}/> : null}
+      <div className={vencedor ? 'details' : 'details hide'}>
+        <p>Nome: {vencedor?.nome}</p>
+        <p>Contato: ****-{vencedor?.contato}</p>
+      </div>
       <div className="container body" id="root2">
         <div className={showCoins ? "slot pulse-effect" : "slot"}>
           <div className="base-machine">

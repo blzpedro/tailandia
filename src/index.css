@@ -23,7 +23,7 @@
 
 #root2{
   position: relative;
-  top: 50px;
+  top: 0px;
 }
 
 canvas{
@@ -298,4 +298,22 @@ body {
     margin-top: -50px;
     margin-left: -5px;
   }
+}
+
+.details{
+  text-align: center;
+  font-size: 32px;
+  filter: drop-shadow(3px 5px #ae6c2e);
+  background: linear-gradient(180deg, #fff 0%,#fff 40%, #474b5e 100%);
+  color: #fff;
+  background-clip: text;
+  transition: .7s all ease;
+  p{
+    margin: 0;
+  }
+}
+
+.hide {
+  color: transparent !important;
+  background: transparent;
 }
